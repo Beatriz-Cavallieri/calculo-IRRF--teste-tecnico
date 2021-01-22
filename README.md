@@ -15,3 +15,7 @@ Sistema web para gerenciar os funcionários de uma empresa e calcular o IRRF de 
 ### Instruções para executar a aplicação
 
 * Na pasta raiz executar o comando `yarn start` para executar a aplicação em modo de desenvolvimento.
+
+### Instruções para executar testes da aplicação
+
+* Na pasta raiz executar o comando `yarn jest`.

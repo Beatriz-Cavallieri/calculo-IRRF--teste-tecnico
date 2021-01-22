@@ -11,10 +11,11 @@ import { adicionarFuncionario } from "../../store/funcionarios/actionCreators";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../..";
 
-import * as Yup from "yup";
 import formatarCPF from "../../utils/formatarCPF";
 
 const CadastroFuncionarios: React.FC = () => {
+  // Ação futura: criar um hook que simplifique
+  // a repetição de comportamento de cada input e seu respectivo estado
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [salario, setSalario] = useState(0);
@@ -28,16 +29,40 @@ const CadastroFuncionarios: React.FC = () => {
     [dispatch]
   );
 
+  const validarNome = (nome: string) => {
+    const regexNome = /^[a-z][a-z ,.'-]+$/i;
+    if (!regexNome.test(nome)) {
+      throw new Error("Nome possui caracteres inválidos.");
+    }
+  };
+
+  const validarCPF = (cpf: string) => {
+    const isCpfValido = formatarCPF(cpf);
+    if (!isCpfValido) {
+      throw new Error("CPF inválido");
+    } else {
+      setCpf(isCpfValido);
+    }
+  };
+
+  const validarNumero = (param: any, campo: string) => {
+    if (typeof param !== "number") {
+      throw new Error(`O campo ${campo} deve ser um valor numérico.`);
+    }
+  };
+
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
       try {
-        const validaCPF = formatarCPF(cpf)
-        if (!validaCPF) {
-          throw new Error("CPF inválido");
-        } else {
-          setCpf(validaCPF);
-        }
+        // Ação futura: fazer validação assíncrona
+        // para identificar todos os erros concomitantemente
+        validarCPF(cpf);
+        validarNome(nome);
+
+        validarNumero(salario, "Salário");
+        validarNumero(desconto, "Desconto");
+        validarNumero(dependentes, "Dependentes");
 
         const novoFuncionario: IFuncionario = {
           nome,
@@ -62,7 +87,7 @@ const CadastroFuncionarios: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Input
             nome="Nome"
-            placeholder="Nome"
+            placeholder="Nome Completo"
             valor={nome}
             onChange={({ target }) => setNome(target.value)}
           />
@@ -81,8 +106,8 @@ const CadastroFuncionarios: React.FC = () => {
             onChange={({ target }) => setSalario(Number(target.value))}
           />
           <Input
-            nome="Desconto da previdência"
-            placeholder="0"
+            nome="Desconto da previdência (R$)"
+            placeholder="0000,00"
             valor={desconto}
             onChange={({ target }) => setDesconto(Number(target.value))}
           />

@@ -63,7 +63,10 @@ const ListagemFuncionarios: React.FC = () => {
         </TableContainer>
         <Link to="/cadastro">
           <Button>Adicionar funcionário</Button>
-        </Link>{" "}
+        </Link>
+        <Link to="/pesquisa" className="secondary">
+          <Button>Alterar ou remover dados de funcionário</Button>
+        </Link>
       </Main>
     </>
   );
