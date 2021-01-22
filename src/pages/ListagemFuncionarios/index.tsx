@@ -6,15 +6,17 @@ import { TableContainer } from "./styles";
 
 import { shallowEqual, useSelector } from "react-redux";
 import {
-  EstadoFuncionarios,
-  Funcionario,
+  IEstadoFuncionarios,
+  IFuncionario,
 } from "../../store/funcionarios/types";
 
 import calcularIRRF from "../../utils/calcularIRRF";
+import Button from "../../components/Button";
+import { Link } from "react-router-dom";
 
 const ListagemFuncionarios: React.FC = () => {
-  const funcionarios: Funcionario[] = useSelector(
-    (state: EstadoFuncionarios) => state.funcionarios,
+  const funcionarios: IFuncionario[] = useSelector(
+    (state: IEstadoFuncionarios) => state.funcionarios,
     shallowEqual
   );
 
@@ -59,6 +61,9 @@ const ListagemFuncionarios: React.FC = () => {
             </tbody>
           </table>
         </TableContainer>
+        <Link to="/cadastro">
+          <Button>Adicionar funcionário</Button>
+        </Link>{" "}
       </Main>
     </>
   );

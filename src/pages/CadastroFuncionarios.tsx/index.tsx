@@ -6,80 +6,97 @@ import Header from "../../components/Header";
 import Input from "../../components/Input";
 import Main from "../../components/Main";
 
-import { Funcionario } from "../../store/funcionarios/types";
-import { Dispatch } from "redux";
+import { IFuncionario } from "../../store/funcionarios/types";
+import { adicionarFuncionario } from "../../store/funcionarios/actionCreators";
 import { useDispatch } from "react-redux";
-import { adicionarFuncionario } from "../../store/funcionarios/criarActions";
+import { AppDispatch } from "../..";
+
+import * as Yup from "yup";
+import formatarCPF from "../../utils/formatarCPF";
 
 const CadastroFuncionarios: React.FC = () => {
   const [nome, setNome] = useState("");
-  const [CPF, setCPF] = useState("");
+  const [cpf, setCpf] = useState("");
   const [salario, setSalario] = useState(0);
   const [desconto, setDesconto] = useState(0);
   const [dependentes, setDependentes] = useState(0);
 
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const registrarFuncionario = useCallback(
-    (funcionario: Funcionario) => dispatch(adicionarFuncionario(funcionario)),
+  const handleAdicionarFuncionario = useCallback(
+    (funcionario: IFuncionario) => dispatch(adicionarFuncionario(funcionario)),
     [dispatch]
   );
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    const novoFuncionario: Funcionario = {
-      nome,
-      cpf: CPF,
-      salario,
-      desconto,
-      dependentes,
-    };
+  const handleSubmit = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault();
+      try {
+        const validaCPF = formatarCPF(cpf)
+        if (!validaCPF) {
+          throw new Error("CPF inválido");
+        } else {
+          setCpf(validaCPF);
+        }
 
-      registrarFuncionario(novoFuncionario);
-  };
+        const novoFuncionario: IFuncionario = {
+          nome,
+          cpf,
+          salario,
+          desconto,
+          dependentes,
+        };
+
+        handleAdicionarFuncionario(novoFuncionario);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [cpf, dependentes, desconto, handleAdicionarFuncionario, nome, salario]
+  );
 
   return (
     <>
       <Header titulo="Cadastro" />
       <Main>
-        <form action="" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Input
-            name="Nome"
+            nome="Nome"
             placeholder="Nome"
-            value={nome}
+            valor={nome}
             onChange={({ target }) => setNome(target.value)}
           />
           <Input
             pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
             placeholder="000.000.000-00"
             title="CPF apenas em números ou no formato 000.000.000-00"
-            name="CPF"
-            value={CPF}
-            onChange={({ target }) => setCPF(target.value)}
+            nome="CPF"
+            valor={cpf}
+            onChange={({ target }) => setCpf(target.value)}
           />
           <Input
-            name="Salário bruto (R$)"
+            nome="Salário bruto (R$)"
             placeholder="0000,00"
-            value={salario}
+            valor={salario}
             onChange={({ target }) => setSalario(Number(target.value))}
           />
           <Input
-            name="Desconto da previdência"
+            nome="Desconto da previdência"
             placeholder="0"
-            value={desconto}
+            valor={desconto}
             onChange={({ target }) => setDesconto(Number(target.value))}
           />
           <Input
-            name="Número de dependentes"
+            nome="Número de dependentes"
             placeholder="0"
-            value={dependentes}
+            valor={dependentes}
             onChange={({ target }) => setDependentes(Number(target.value))}
           />
+          <Button type="submit">Salvar</Button>
+          <Link to="/" className="secondary">
+            <Button>Voltar</Button>
+          </Link>
         </form>
-        <Button>Adicionar cadastro</Button>
-        <Link to="/" className="secondary">
-          <Button>Voltar</Button>
-        </Link>
       </Main>
     </>
   );

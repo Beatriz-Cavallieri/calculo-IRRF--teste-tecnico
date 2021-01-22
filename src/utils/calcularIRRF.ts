@@ -4,7 +4,9 @@ interface ICalculoIRRF {
   quantidadeDependentes: number;
 }
 
-const calcularSalarioBase = ({
+// Função auxilias
+// Calcula salário base para o cálculo de IRRF
+export const calcularSalarioBase = ({
   salarioBruto,
   descontoPrevidencia,
   quantidadeDependentes,
@@ -18,6 +20,8 @@ const calcularSalarioBase = ({
   );
 };
 
+// Valores de alíquota e dedução do IR progressivos
+// Organizados por intervalos de valores de acordo com o limite superior do intervalo
 const intervalosDeValoresProgressivos = [
   {
     limiteSuperior: 1903.98,
@@ -51,6 +55,9 @@ const calcularIRRF = ({
   descontoPrevidencia,
   quantidadeDependentes,
 }: ICalculoIRRF) => {
+  if (salarioBruto <= intervalosDeValoresProgressivos[0].limiteSuperior) {
+    return 0;
+  }
   const salarioBase = calcularSalarioBase({
     salarioBruto,
     descontoPrevidencia,
@@ -60,7 +67,7 @@ const calcularIRRF = ({
   const intervalo = intervalosDeValoresProgressivos.find(
     (intervalo) => salarioBase <= intervalo.limiteSuperior
   );
-  
+
   return intervalo ? salarioBase * intervalo.aliquota - intervalo.deduzir : 0;
 };
 

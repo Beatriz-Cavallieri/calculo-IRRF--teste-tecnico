@@ -1,4 +1,4 @@
-export interface Funcionario {
+export interface IFuncionario {
   nome: string;
   cpf: string;
   salario: number;
@@ -6,8 +6,8 @@ export interface Funcionario {
   dependentes: number;
 }
 
-export interface EstadoFuncionarios {
-  funcionarios: Funcionario[];
+export interface IEstadoFuncionarios {
+  funcionarios: IFuncionario[];
 }
 
 // Tipos de ações para o store Redux
@@ -19,17 +19,19 @@ export const ADICIONAR_FUNCIONARIO = "ADICIONAR_FUNCIONARIO";
 export const ATUALIZAR_FUNCIONARIO = "ATUALIZAR_FUNCIONARIO";
 export const EXCLUIR_FUNCIONARIO = "EXCLUIR_FUNCIONARIO";
 
+
+// Action creators
 export interface AcaoAdicionarMensagem {
   type: typeof ADICIONAR_FUNCIONARIO;
-  funcionario: Funcionario;
+  funcionario: IFuncionario;
 }
 
 export interface AcaoAtualizarMensagem {
   type: typeof ATUALIZAR_FUNCIONARIO;
-  funcionario: Funcionario;
+  funcionario: IFuncionario;
 }
 
 export interface AcaoExcluirMensagem {
   type: typeof EXCLUIR_FUNCIONARIO;
-  funcionario: Funcionario;
+  funcionario: IFuncionario;
 }

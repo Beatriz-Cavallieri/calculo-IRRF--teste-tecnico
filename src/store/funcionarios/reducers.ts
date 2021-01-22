@@ -1,12 +1,13 @@
 import {
-  EstadoFuncionarios,
+  IEstadoFuncionarios,
   ADICIONAR_FUNCIONARIO,
   ATUALIZAR_FUNCIONARIO,
   EXCLUIR_FUNCIONARIO,
 } from "./types";
-import { FuncionarioActionTypes } from "./FuncionarioActionTypes";
+import { FuncionarioActionTypes } from "./actionTypes";
 
-const estadoInicial: EstadoFuncionarios = {
+// Estado inicial - já com alguns exemplos
+const estadoInicial: IEstadoFuncionarios = {
   funcionarios: [
     {
       nome: "Letícia Aurora Farias",
@@ -46,10 +47,11 @@ const estadoInicial: EstadoFuncionarios = {
   ],
 };
 
+// Função reducer
 export function reducer(
   state = estadoInicial,
   action: FuncionarioActionTypes
-): EstadoFuncionarios {
+): IEstadoFuncionarios {
   switch (action.type) {
     case ADICIONAR_FUNCIONARIO:
       return {

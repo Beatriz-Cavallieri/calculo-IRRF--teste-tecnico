@@ -1,7 +1,11 @@
-import React from "react";
+import React, { ButtonHTMLAttributes } from "react";
 import { StyledButton } from "./styles";
 
-const Button: React.FC = ({ children }) => (
+interface StyledButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+
+}
+
+const Button: React.FC<StyledButtonProps> = ({ children}) => (
   <StyledButton>{children}</StyledButton>
 );
 

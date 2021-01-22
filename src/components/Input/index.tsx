@@ -2,14 +2,14 @@ import React, { InputHTMLAttributes } from "react";
 import { Container } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
-  value: number | string;
+  nome: string;
+  valor: number | string;
 }
 
-const Input: React.FC<InputProps> = ({ name, ...rest }) => (
+const Input: React.FC<InputProps> = ({ nome, valor, ...rest }) => (
   <Container>
-    <label htmlFor={name}>{name}</label>
-    <input type="text" name={name} id={name} {...rest} />
+    <label htmlFor={nome}>{nome}</label>
+    <input type="text" name={nome} id={nome} {...rest} />
   </Container>
 );
 

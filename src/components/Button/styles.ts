@@ -16,9 +16,9 @@ export const StyledButton = styled.button`
     margin-left: 0.4rem;
   }
 
-  .secondary &{
+  .secondary & {
     background-color: white;
-    color: #70a0b1; 
+    color: #70a0b1;
     border: 1px solid lightblue;
   }
 `;
